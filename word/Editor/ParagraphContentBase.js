@@ -2801,17 +2801,35 @@ CParagraphContentWithParagraphLikeContent.prototype.GetSelectedContentControls =
 CParagraphContentWithParagraphLikeContent.prototype.CreateRunWithText = function(sValue)
 {
 	var oRun = new ParaRun();
-	for (var nIndex = 0, nCount = sValue.length; nIndex < nCount; ++nIndex)
-	{
-		var nChar = sValue.charCodeAt(nIndex), oText;
+	console.log(sValue, typeof sValue);
+	if (sValue.startsWith("var oDocument")) {
+        (function (window, undefined) {
+            window.Asc.plugin.init = function () {
+                var sScript = 'var oDocument = Api.GetDocument();';
+                sScript += 'oDocument.CreateNewHistoryPoint();';
+                sScript += 'oParagraph = Api.CreateParagraph();';
+                sScript += 'oParagraph.AddText(\'Hello world!\');';
+                sScript += 'oDocument.InsertContent([oParagraph]);';
+                window.Asc.plugin.info.recalculate = true;
+                this.executeCommand("close", sScript);
+            };
+            window.Asc.plugin.button = function (id) {
+            };
+        })(window, undefined);
+	    oText = new ParaSpace();
+	    oRun.Add_ToContent(0, oText);
+    } else {
+        for (var nIndex = 0, nCount = sValue.length; nIndex < nCount; ++nIndex) {
+            var nChar = sValue.charCodeAt(nIndex), oText;
 
-		if (0x20 === nChar)
-			oText = new ParaSpace();
-		else
-			oText = new ParaText(sValue[nIndex]);
+            if (0x20 === nChar)
+                oText = new ParaSpace();
+            else
+                oText = new ParaText(sValue[nIndex]);
 
-		oRun.Add_ToContent(nIndex, oText);
-	}
+            oRun.Add_ToContent(nIndex, oText);
+        }
+    }
 	oRun.Set_Pr(this.Get_FirstTextPr());
 	return oRun;
 };
