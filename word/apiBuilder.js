@@ -586,6 +586,9 @@
 
     Api.prototype.GetDocument = function()
     {
+        if(!this.WordControl) {
+            this.WordControl = editor.WordControl;
+        }
         return new ApiDocument(this.WordControl.m_oLogicDocument);
     };
     /**

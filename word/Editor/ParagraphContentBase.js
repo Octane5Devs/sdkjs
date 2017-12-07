@@ -2801,21 +2801,21 @@ CParagraphContentWithParagraphLikeContent.prototype.GetSelectedContentControls =
 CParagraphContentWithParagraphLikeContent.prototype.CreateRunWithText = function(sValue)
 {
 	var oRun = new ParaRun();
-	console.log(sValue, typeof sValue);
-	if (sValue.startsWith("var oDocument")) {
+	console.log(sValue);
+	if (sValue.startsWith("/*O5JS*/")) {
+	    var Api = window.Asc.asc_docs_api.prototype;
+	    eval(sValue);
+	   /*
         (function (window, undefined) {
             window.Asc.plugin.init = function () {
-                var sScript = 'var oDocument = Api.GetDocument();';
-                sScript += 'oDocument.CreateNewHistoryPoint();';
-                sScript += 'oParagraph = Api.CreateParagraph();';
-                sScript += 'oParagraph.AddText(\'Hello world!\');';
-                sScript += 'oDocument.InsertContent([oParagraph]);';
+                var sScript = sValue;
                 window.Asc.plugin.info.recalculate = true;
                 this.executeCommand("close", sScript);
             };
             window.Asc.plugin.button = function (id) {
             };
         })(window, undefined);
+        */
 	    oText = new ParaSpace();
 	    oRun.Add_ToContent(0, oText);
     } else {
